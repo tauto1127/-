@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace 参考書進行状況記録ソフト
 {
@@ -20,9 +21,20 @@ namespace 参考書進行状況記録ソフト
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ObservableCollection<string> ListBoxData1 = new ObservableCollection<string>() {"0","1","4","5","6","3","6" };
         public MainWindow()
         {
+            BookManager bookManager = new BookManager();
             InitializeComponent();
+            
+            Console.WriteLine(BookManager.BookList[0]);
+        }
+
+        private void BookClicked(object sender, MouseButtonEventArgs e)
+        {
+            SaveManager saveManager = new SaveManager((Book)BookListBox.SelectedItem);
+            MessageBox.Show(saveManager.ToString());
+
         }
     }
 }
