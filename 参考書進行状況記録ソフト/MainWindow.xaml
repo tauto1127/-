@@ -21,5 +21,6 @@
             x:Name="BookListBox"
             
             MouseDoubleClick="BookClicked"/>
+        <Button Height="30" Click="Button_Click"/>
     </Grid>
 </Window>

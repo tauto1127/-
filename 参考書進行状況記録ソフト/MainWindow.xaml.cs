@@ -32,9 +32,16 @@ namespace 参考書進行状況記録ソフト
 
         private void BookClicked(object sender, MouseButtonEventArgs e)
         {
-            SaveManager saveManager = new SaveManager((Book)BookListBox.SelectedItem);
-            MessageBox.Show(saveManager.ToString());
+            //SaveManager saveManager = new SaveManager((Book)BookListBox.SelectedItem);
+            //MessageBox.Show(saveManager.ToString());
+            /*BookWindow bookWindow = new BookWindow((Book) BookListBox.SelectedItem);
+            bookWindow.Show();
+            this.Close();*/
+        }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SaveManager saveManager = new SaveManager("青チャート", 60);
         }
     }
 }

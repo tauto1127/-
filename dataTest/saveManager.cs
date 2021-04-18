@@ -1,40 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.AccessControl;
 using System.Text.RegularExpressions;
-using System.Windows;
-using dataTest;
 
-namespace 参考書進行状況記録ソフト
+namespace dataTest
 {
     class SaveManager
     {
-        public int NumberOfQuestion { get; set; }
+        public string homePath { get; set; }
         public string Path { get; set; }
+        public int NumberOfQuestion { get; set; }
         private Regex _regex = new Regex(@"(?<Comment>.+),(?<Time>..................)");
-        private RecentrySave _recentrySave = new RecentrySave();
-        public SaveManager(string bookName)
+        public SaveManager(string homePath, string bookName)
         {
-            Path = Info.homePath + bookName;
+            this.homePath = homePath + @"\";
+            this.Path = this.homePath + bookName;
             NumberOfQuestionChecker();
         }
         
-        public SaveManager(string bookName, int NumberOfQuestions)
+        public SaveManager(string homePath, string bookName, int NumberOfQuestions)
         {
-            Path = Info.homePath + bookName;
-            if (!BookExistCheck(bookName)) { CreateSave(bookName, NumberOfQuestions); }
-            NumberOfQuestionChecker();
-
-            _recentrySave.List.Add(new memoryObject("abcdefg",new DateTime(637541280000000000)));
-            SaveRecentryHistory();
-        }
-
-        public SaveManager(Book book)
-        {
-            Path = book.Path;
+            this.homePath = homePath + @"\";
+            this.Path = this.homePath + bookName;
+            if (BookExistCheck(bookName)) { CreateSave(bookName, NumberOfQuestions); }
             NumberOfQuestionChecker();
         }
 
@@ -54,7 +43,6 @@ namespace 参考書進行状況記録ソフト
             return true;
         }
 
-        
         public void  NumberOfQuestionChecker()
         {
             int i = 1;
@@ -75,38 +63,14 @@ namespace 参考書進行状況記録ソフト
 
         public void CreateSave(string workBookName, int numberOfQuestion)
         {
-            
             if (!BookExistCheck(workBookName))
             {
                 System.IO.Directory.CreateDirectory(Path);
                 for (int i = 1; i < numberOfQuestion + 1; i++)
                 {
                     System.IO.Directory.CreateDirectory($@"{Path}\{i}");
-                    FileStream fileStream = File.Create($@"{Path}\{i}\data");
-                    fileStream.Close();
+                    using (FileStream fileStream = File.Create($@"{Path}\{i}\data")) ;
                 }
-
-                using (FileStream fileStream = File.Create($@"{Path}\data"))
-                {
-                    
-                }
-                /*try
-                {
-                    using (StreamWriter streamWriter = new StreamWriter($@"{Path}\data",true))
-                    {
-                        for (int i = 1; i < numberOfQuestion; i++)
-                        {
-                            streamWriter.WriteLine("");
-                        }
-                    }
-                }
-                catch (IOException e)
-                {
-                    MessageBox.Show(e.ToString());
-                    throw;
-                }*/
-                
-                
             }
             else
             {
@@ -120,7 +84,6 @@ namespace 参考書進行状況記録ソフト
             streamWriter.WriteLine(memoryObject.Comment + "," + memoryObject.DateTime.Ticks);
             //コメントに　,　をつけさせないようにする。
             streamWriter.Close();
-            
         }
 
         public string GetAllSaveString()
@@ -143,10 +106,10 @@ namespace 参考書進行状況記録ソフト
             }
         }
 
-        public List<memoryObject> GetSave(int questionNumber)
+        public List<memoryObject> GetSave(int QuestionNumber)
         {
             List<memoryObject> list = new List<memoryObject>();
-            using (StreamReader streamReader = new StreamReader($@"{Path}\{questionNumber}\data" , true))
+            using (StreamReader streamReader = new StreamReader($@"{Path}\{QuestionNumber}\data" , true))
             {
                 string strr;
                 if (streamReader == null)

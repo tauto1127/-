@@ -2,7 +2,6 @@
 
 namespace dataTest
 {
-    [Serializable]
     public class memoryObject
     {
         public string Comment { get; set; }
