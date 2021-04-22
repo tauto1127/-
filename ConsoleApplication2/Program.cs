@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ConsoleApplication2
@@ -7,15 +8,24 @@ namespace ConsoleApplication2
     {
         public static void Main(string[] args)
         {
-            /*
-            foreach (var VARIABLE in Directory.GetDirectories(@"C:\k-on"))
+            List<int> list = new List<int>(16);
+            for (int i = 0; i < 20; i++)
             {
-                Console.WriteLine(VARIABLE);
-            }*/
-            string removestring = "おかき";
-            string korekore = "あいうえおかきくけこさしすせそ";
-            Console.WriteLine(korekore.Replace(removestring,""));
-            
+                try
+                {
+                    list.Add(i);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+
+            foreach (var i in list)
+            {
+                Console.WriteLine(i);
+            }
         }
     }
 }
